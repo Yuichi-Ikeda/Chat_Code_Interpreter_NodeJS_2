@@ -14,39 +14,6 @@
 - GPT-4o モデル バージョン : `2024-05-13`
 - API_VERSION : `2024-05-01-preview`
 
-## 日本語フォント
-
-日本語フォントを ZIP にアーカイブしてアップロードするシナリオには制約があります。現状アーカイブした日本語フォントと EXCEL ファイルを Python 仮想環境の同じディレクトリに展開するよう明示的に指定する事で安定した動作を確認しています。
-
-以下のコード例は、Code Interpreter（Python 仮想環境）の`/mnt/data/upload_files` を明示的なアップロード場所として指定しています。
-
-```javascript
-///////////////////////////////////
-// スレッド作成関数
-///////////////////////////////////
-const thread = await client.beta.threads.create({
-    messages: [{
-    role: 'user',
-    content: 'アップロードされた Font.zip と Excel.zip を /mnt/data/upload_files に展開してください。これらの ZIP ファイルには解析対象の EXCEL ファイルと日本語フォント NotoSansJP.ttf が含まれています。展開した先にある EXCEL ファイルをユーザーの指示に従い解析してください。EXCEL データからグラフやチャート画像を生成する場合、タイトル、軸項目、凡例等に NotoSansJP.ttf を利用してください。',
-    attachments:[
-    {
-    "file_id": file_font.id,
-    "file_id": file_excel.id,
-    "tools": [{"type": "code_interpreter"}]
-    }]
-    }]
-});
-```
-
-## ES Modules（推奨）/ CommonJS
-
-本プロジェクトには、ES Modules（推奨）/ CommonJS 両方の実装が含まれています。既定値は `main_EMS.js` となっています。CommonJS にする場合は、`package.json` の `main` と `type` フィールドを変更してください。
-
-- 新しいプロジェクトやブラウザと互換性を持たせたい場合 → ESM ("type": "module") 
-- 古い Node.js のコードや互換性のために必要 → CommonJS ("type": "commonjs")
-
-デバッグ実行をする際には `.vscode` フォルダの `launch.json` のプログラム指定も一致する .js ファイルを指定する必要があります。
-
 ## セットアップ
 
 1. `package.json` で指定されているモジュールをインストールします。
@@ -75,6 +42,10 @@ const thread = await client.beta.threads.create({
     ```
 
 2. プロンプトに従ってユーザー入力を行います。終了するには `exit` と入力します。
+
+## デバッグ
+
+VSCode からデバッグ実行する場合は、`.vscode/launch.json` ファイルが用意されています。`F5` キーを押してデバッグ実行を行うことができます。
 
 ## チャット例
 
@@ -112,9 +83,38 @@ const thread = await client.beta.threads.create({
 
 ![医療施設数と総人口の相関関係](./output_images/医療施設数と総人口の相関関係.png)
 
-## デバッグ
+## 日本語フォント
 
-VSCode からデバッグ実行する場合は、`.vscode/launch.json` ファイルが用意されています。`F5` キーを押してデバッグ実行を行うことができます。
+日本語フォントを ZIP にアーカイブしてアップロードするシナリオには制約があります。現状アーカイブした日本語フォントと EXCEL ファイルを Python 仮想環境の同じディレクトリに展開するよう明示的に指定する事で安定した動作を確認しています。
+
+以下のコード例は、Code Interpreter（Python 仮想環境）の`/mnt/data/upload_files` を明示的なアップロード場所として指定しています。
+
+```javascript
+///////////////////////////////////
+// スレッド作成関数
+///////////////////////////////////
+const thread = await client.beta.threads.create({
+    messages: [{
+    role: 'user',
+    content: 'アップロードされた Font.zip と Excel.zip を /mnt/data/upload_files に展開してください。これらの ZIP ファイルには解析対象の EXCEL ファイルと日本語フォント NotoSansJP.ttf が含まれています。展開した先にある EXCEL ファイルをユーザーの指示に従い解析してください。EXCEL データからグラフやチャート画像を生成する場合、タイトル、軸項目、凡例等に NotoSansJP.ttf を利用してください。',
+    attachments:[
+    {
+    "file_id": file_font.id,
+    "file_id": file_excel.id,
+    "tools": [{"type": "code_interpreter"}]
+    }]
+    }]
+});
+```
+
+## ES Modules（推奨）/ CommonJS
+
+本プロジェクトには、ES Modules（推奨）/ CommonJS 両方の実装が含まれています。既定値は `main_EMS.js` となっています。CommonJS にする場合は、`package.json` の `main` と `type` フィールドを変更してください。
+
+- 新しいプロジェクトやブラウザと互換性を持たせたい場合 → ESM ("type": "module") 
+- 古い Node.js のコードや互換性のために必要 → CommonJS ("type": "commonjs")
+
+デバッグ実行をする際には `.vscode` フォルダの `launch.json` のプログラム指定も一致する .js ファイルを指定する必要があります。
 
 ## 参考資料
 
